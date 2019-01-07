@@ -6,7 +6,8 @@
         "dsteem": "^0.8.7",
         "event-stream": "^3.3.4",
         "express": "^4.16.2",
-        "steem": "^0.7.2"
+        "steem": "^0.7.2",
+        "socket.io": "^1.7.1"
     },
     "scripts": {
         "start": "node index.js"
