@@ -1,12 +1,10 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var app = express();
+const { Client, BlockchainMode } = require('dsteem');
+const express = require('express')
+const app = express()
+const port = process.env.PORT || 4000
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-const { Client, BlockchainMode } = require('dsteem');
 var client = new Client('https://api.steemit.com')
-
-var port = process.env.PORT || 8080;
 
 http.listen(port, function () {
     console.log('Server Started. Listening on *:' + port);
@@ -22,10 +20,6 @@ app.use(function (req, res, next) {
     next();
 });
 
-
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
 
 app.get('/', function (req, res) {
     res.json({ hello: 'world' });
