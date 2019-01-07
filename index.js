@@ -89,10 +89,6 @@ io.on('connection', function (socket) {
 });
 
 
-const { Client, BlockchainMode } = require('dsteem');
-var client = new Client('https://api.steemit.com')
-
-
 var stream = client.blockchain.getBlockStream({ mode: BlockchainMode.Latest })
 stream.on("data", function (block) {
     if (block != null) {
