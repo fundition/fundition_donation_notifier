@@ -11,8 +11,7 @@ http.listen(port, function () {
     console.log('Server Started. Listening on *:' + port);
 });
 
-var chatters = [];
-var chat_messages = [];
+
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -44,6 +43,7 @@ stream.on("data", function (block) {
             if (object[i].operations[0][0] === "transfer") {
                 var op = object[i].operations[0][1]
                 var block = object[i].block_num
+                console.log(op)
                 io.emit('send', op);
                 if (op.memo.includes('Fundition-') || op.memo.includes('fundition-') || op.memo.includes('Project=Fundition-') && op.to != 'smartmarket') {
                     console.log('this is a donation from ' + op.from)
