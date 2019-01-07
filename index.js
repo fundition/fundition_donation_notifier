@@ -5,13 +5,15 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 const { Client, BlockchainMode } = require('dsteem');
 var client = new Client('https://api.steemit.com')
+
 var port = process.env.PORT || 8080;
 
 http.listen(port, function () {
     console.log('Server Started. Listening on *:' + port);
 });
 
-
+var chatters = [];
+var chat_messages = [];
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -28,6 +30,68 @@ app.use(bodyParser.urlencoded({
 app.get('/', function (req, res) {
     res.json({ hello: 'world' });
 });
+
+app.post('/join', function (req, res) {
+    var username = req.body.username;
+    if (chatters.indexOf(username) === -1) {
+        chatters.push(username);
+        res.send({
+            'chatters': chatters,
+            'status': 'OK'
+        });
+    } else {
+        res.send({
+            'status': 'FAILED'
+        });
+    }
+});
+
+app.post('/leave', function (req, res) {
+    var username = req.body.username;
+    chatters.splice(chatters.indexOf(username), 1);
+    res.send({
+        'status': 'OK'
+    });
+});
+
+app.post('/send_message', function (req, res) {
+    var room = req.body.room;
+    var username = req.body.username;
+    var message = req.body.message;
+    var date = new Date().toUTCString()
+    chat_messages.push({
+        'room': room,
+        'sender': username,
+        'message': message,
+        'date': date
+    });
+    res.send({
+        'status': 'OK'
+    });
+});
+
+app.get('/get_messages', function (req, res) {
+    res.send(chat_messages);
+});
+
+app.get('/get_chatters', function (req, res) {
+    res.send(chatters);
+});
+
+io.on('connection', function (socket) {
+    socket.on('message', function (data) {
+        io.emit('send', data);
+    });
+    socket.on('update_chatter_count', function (data) {
+        io.emit('count_chatters', data);
+    });
+
+});
+
+
+const { Client, BlockchainMode } = require('dsteem');
+var client = new Client('https://api.steemit.com')
+
 
 var stream = client.blockchain.getBlockStream({ mode: BlockchainMode.Latest })
 stream.on("data", function (block) {
@@ -83,3 +147,5 @@ io.on('connection', function (socket) {
         io.emit('send', data);
     });
 });
+
+
