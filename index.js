@@ -4,7 +4,7 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 const { Client, BlockchainMode } = require('dsteem');
-
+var client = new Client('https://api.steemit.com')
 var port = process.env.PORT || 8080;
 
 http.listen(port, function () {
