@@ -3,17 +3,12 @@
     "version": "0.0.1",
     "description": "ongame chat app",
     "dependencies": {
-        "body-parser": "^1.15.2",
-        "express": "^4.10.2",
+        "dsteem": "^0.8.7",
         "event-stream": "^3.3.4",
-        "redis": "^2.6.3",
-        "dsteem": "^0.8.7"
+        "express": "^4.16.2",
+        "steem": "^0.7.2"
     },
-    "main": "index.js",
     "scripts": {
         "start": "node index.js"
-    },
-    "engines": {
-        "node": "4.1.1"
     }
 }
