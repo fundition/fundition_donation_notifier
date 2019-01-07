@@ -45,8 +45,12 @@ stream.on("data", function (block) {
                 var op = object[i].operations[0][1]
                 var block = object[i].block_num
                 op.project= {}
+                if(op.from === "fundition" && op.memo === "Your reward for claiming your daily chest on Fundition.io!")
+                {
+                    io.emit('send', op);
+                }
                 console.log(op)
-                io.emit('send', op);
+                // io.emit('send', op);
                 if (op.memo.includes('Fundition-') || op.memo.includes('fundition-') || op.memo.includes('Project=Fundition-') && op.to != 'smartmarket') {
                     console.log('this is a donation from ' + op.from)
                     op.memo = op.memo.replace("/", "°")
