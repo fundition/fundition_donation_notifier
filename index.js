@@ -46,6 +46,7 @@ stream.on("data", function (block) {
                 var block = object[i].block_num
                 if(op.from === "fundition" && op.memo === "Your reward for claiming your daily chest on Fundition.io!")
                 {
+                    console.log('this is a gift for ' + op.from)
                     op.type= 'gift'
                     io.emit('send', op);
                 }
